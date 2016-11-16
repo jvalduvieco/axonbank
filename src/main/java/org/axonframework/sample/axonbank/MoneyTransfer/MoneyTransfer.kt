@@ -16,6 +16,9 @@ class MoneyTransfer @CommandHandler constructor(command: MoneyTransferCommand) {
     @AggregateIdentifier
     private var transferId: String? = null
 
+    init {
+        apply(MoneyTransferRequestedEvent(command.transferId, command.sourceAccount, command.targetAccount, command.amount))
+    }
     @CommandHandler
     fun handle(command: CompleteMoneyTransferCommand) {
         apply(MoneyTransferCompletedEvent(command.transferId))
@@ -28,12 +31,9 @@ class MoneyTransfer @CommandHandler constructor(command: MoneyTransferCommand) {
     fun on(event: MoneyTransferRequestedEvent) {
         transferId = event.transferId
     }
+
     @EventSourcingHandler
     fun on(event: MoneyTransferCancelledEvent) {
         markDeleted()
-    }
-
-    init {
-        apply(MoneyTransferRequestedEvent(command.transferId, command.sourceAccount, command.targetAccount, command.amount))
     }
 }

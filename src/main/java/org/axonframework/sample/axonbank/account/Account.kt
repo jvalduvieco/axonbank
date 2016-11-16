@@ -28,13 +28,13 @@ class Account {
     @CommandHandler
     fun handle(command: WithdrawMoneyCommand){
         if (balance + overdraftLimit >=command.amount){
-            AggregateLifecycle.apply(MoneyWithdrawnEvent(accountId!!, command.amount, balance - command.amount))
+            AggregateLifecycle.apply(MoneyWithdrawnEvent(accountId!!, command.transactionId, command.amount, balance - command.amount))
         } else
             throw OverdraftLimitExceededException()
     }
     @CommandHandler
     fun handle(command: DepositMoneyCommand){
-        AggregateLifecycle.apply(MoneyDepositedEvent(accountId!!, command.amount, balance + command.amount))
+        AggregateLifecycle.apply(MoneyDepositedEvent(accountId!!, command.transactionId, command.amount, balance + command.amount))
     }
     @EventSourcingHandler
     fun on(event: AccountCreatedEvent) {

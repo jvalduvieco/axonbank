@@ -1,6 +1,5 @@
 package org.axonframework.sample.axonbank
 
-import org.axonframework.commandhandling.AsynchronousCommandBus
 import org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage
 import org.axonframework.config.Configuration
 import org.axonframework.config.DefaultConfigurer
@@ -19,7 +18,7 @@ class Application {
                     .buildConfiguration()
             config.start()
             config.commandBus().dispatch<CreateAccountCommand>(asCommandMessage(CreateAccountCommand("4321", 500)))
-            config.commandBus().dispatch<WithdrawMoneyCommand>(asCommandMessage(WithdrawMoneyCommand("4321", 250)))
+            config.commandBus().dispatch<WithdrawMoneyCommand>(asCommandMessage(WithdrawMoneyCommand("4321", "tx1", 250)))
         }
     }
 }
